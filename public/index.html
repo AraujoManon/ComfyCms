@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyCMS - Créez des Sites Web en 15 Minutes</title>
+    
+    <!-- Styles -->
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-900: #1e3a8a;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            
+            --sidebar-width: 280px;
+            --toolbar-height: 60px;
+            --properties-width: 320px;
+        }
+
+        /* Reset et Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            height: var(--toolbar-height);
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .toolbar-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 30px;
+            background: var(--gray-200);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+        }
+
+        .btn-icon {
+            padding: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: var(--gray-100);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--gray-600);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-tab.active {
+            color: var(--primary-600);
+            border-bottom-color: var(--primary-600);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* Preview Area */
+        .preview-area {
+            flex: 1;
+            background: var(--gray-100);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-controls {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .device-selector {
+            display: flex;
+            gap: 4px;
+        }
+
+        .device-btn {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .device-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .device-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .device-btn.active {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 60px auto 20px;
+            max-width: 1200px;
+            transition: all 0.3s ease;
+            overflow: auto;
+        }
+
+        .preview-frame.mobile {
+            max-width: 375px;
+            margin: 80px auto 20px;
+        }
+
+        .preview-frame.tablet {
+            max-width: 768px;
+            margin: 80px auto 20px;
+        }
+
+        .preview-content {
+            padding: 20px;
+            min-height: 100%;
+        }
+
+        /* Properties Panel */
+        .properties-panel {
+            width: var(--properties-width);
+            background: white;
+            border-left: 1px solid var(--gray-200);
+            overflow-y: auto;
+        }
+
+        .properties-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .properties-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .properties-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--gray-700);
+        }
+
+        .property-group {
+            margin-bottom: 16px;
+        }
+
+        .property-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-bottom: 6px;
+        }
+
+        .property-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .property-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        /* Sections Library */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .section-preview {
+            height: 120px;
+            background: var(--gray-100);
+            position: relative;
+        }
+
+        .section-info {
+            padding: 12px;
+        }
+
+        .section-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .section-category {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Édition en ligne */
+        .editable {
+            outline: 2px solid transparent;
+            transition: outline 0.2s;
+            cursor: pointer;
+        }
+
+        .editable:hover {
+            outline-color: var(--primary-200);
+        }
+
+        .editable.editing {
+            outline-color: var(--primary-500);
+        }
+
+        /* Floating Toolbar */
+        .floating-toolbar {
+            position: absolute;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            padding: 4px;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .floating-toolbar.active {
+            display: flex;
+            gap: 4px;
+        }
+
+        .toolbar-btn {
+            padding: 6px 8px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--gray-100);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Templates Grid */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .template-preview {
+            height: 200px;
+            background: var(--gray-100);
+            position: relative;
+        }
+
+        .template-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-500);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .template-info {
+            padding: 16px;
+        }
+
+        .template-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .template-description {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        /* Color Picker */
+        .color-picker-wrapper {
+            position: relative;
+        }
+
+        .color-input {
+            width: 100%;
+            padding: 8px 12px;
+            padding-left: 40px;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+        }
+
+        .color-preview {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+        }
+
+        .toast {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--error);
+        }
+
+        .toast.info .toast-icon {
+            color: var(--info);
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-section">
+                <h1 style="font-size: 20px; font-weight: 600; color: var(--primary-600);">ComfyCMS</h1>
+            </div>
+            
+            <div class="toolbar-divider"></div>
+            
+            <div class="toolbar-section">
+                <button class="btn-icon" title="Nouveau projet" onclick="comfyCMS.newProject()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14m-7-7h14"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" title="Ouvrir" onclick="comfyCMS.openProject()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" title="Sauvegarder" onclick="comfyCMS.saveProject()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="toolbar-divider"></div>
+            
+            <div class="toolbar-section">
+                <button class="btn-icon" title="Annuler" onclick="comfyCMS.undo()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" title="Refaire" onclick="comfyCMS.redo()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 7v6h-6"/><path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="toolbar-section" style="margin-left: auto;">
+                <button class="btn btn-secondary" onclick="comfyCMS.preview()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    Prévisualiser
+                </button>
+                <button class="btn btn-primary" onclick="comfyCMS.exportProject()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Exporter
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-tabs">
+                    <button class="sidebar-tab active" onclick="comfyCMS.switchTab('templates')">Templates</button>
+                    <button class="sidebar-tab" onclick="comfyCMS.switchTab('sections')">Sections</button>
+                    <button class="sidebar-tab" onclick="comfyCMS.switchTab('pages')">Pages</button>
+                    <button class="sidebar-tab" onclick="comfyCMS.switchTab('assets')">Assets</button>
+                </div>
+                
+                <div class="sidebar-content" id="sidebar-content">
+                    <!-- Le contenu sera injecté dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Preview Area -->
+            <div class="preview-area">
+                <div class="preview-controls">
+                    <div class="device-selector">
+                        <button class="device-btn" onclick="comfyCMS.setDevice('mobile')">Mobile</button>
+                        <button class="device-btn" onclick="comfyCMS.setDevice('tablet')">Tablet</button>
+                        <button class="device-btn active" onclick="comfyCMS.setDevice('desktop')">Desktop</button>
+                    </div>
+                </div>
+                
+                <div class="preview-frame" id="preview-frame">
+                    <div class="preview-content" id="preview-content">
+                        <!-- Le contenu du site sera affiché ici -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Panel -->
+            <div class="properties-panel">
+                <div class="properties-header">
+                    <h2 style="font-size: 18px; font-weight: 600;">Propriétés</h2>
+                </div>
+                
+                <div id="properties-content">
+                    <!-- Les propriétés seront affichées ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toolbar -->
+    <div class="floating-toolbar" id="floating-toolbar">
+        <button class="toolbar-btn" onclick="comfyCMS.textCommand('bold')" title="Gras">
+            <strong>B</strong>
+        </button>
+        <button class="toolbar-btn" onclick="comfyCMS.textCommand('italic')" title="Italique">
+            <em>I</em>
+        </button>
+        <button class="toolbar-btn" onclick="comfyCMS.textCommand('underline')" title="Souligné">
+            <u>U</u>
+        </button>
+        <div style="width: 1px; height: 20px; background: var(--gray-300); margin: 0 4px;"></div>
+        <button class="toolbar-btn" onclick="comfyCMS.insertLink()" title="Lien">
+            🔗
+        </button>
+        <button class="toolbar-btn" onclick="comfyCMS.changeColor()" title="Couleur">
+            🎨
+        </button>
+    </div>
+
+    <!-- Modal Container -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Titre</h3>
+                <button class="btn-icon" onclick="comfyCMS.closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Contenu du modal -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <button class="btn btn-secondary" onclick="comfyCMS.closeModal()">Annuler</button>
+                <button class="btn btn-primary" id="modal-confirm">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- JavaScript -->
+    <script>
+        // ComfyCMS Application Core
+        class ComfyCMS {
+            constructor() {
+                this.currentProject = null;
+                this.currentTemplate = null;
+                this.selectedElement = null;
+                this.currentDevice = 'desktop';
+                this.history = [];
+                this.historyIndex = -1;
+                
+                // Données de démonstration
+                this.templates = [
+                    {
+                        id: 'restaurant-moderne',
+                        name: 'Restaurant Moderne',
+                        category: 'Restaurant',
+                        description: 'Template élégant pour restaurants avec menu et réservation',
+                        preview: 'restaurant.jpg',
+                        html: `
+                            <header class="header">
+                                <nav class="nav">
+                                    <h1 class="logo editable" contenteditable="false">Le Gourmet</h1>
+                                    <ul class="menu">
+                                        <li><a href="#home">Accueil</a></li>
+                                        <li><a href="#menu">Menu</a></li>
+                                        <li><a href="#about">À propos</a></li>
+                                        <li><a href="#contact">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </header>
+                            <section class="hero">
+                                <h2 class="hero-title editable" contenteditable="false">Bienvenue au Gourmet</h2>
+                                <p class="hero-subtitle editable" contenteditable="false">Une expérience culinaire unique</p>
+                                <button class="cta-button editable" contenteditable="false">Réserver une table</button>
+                            </section>
+                        `,
+                        css: `
+                            .header { background: #1a1a1a; color: white; padding: 1rem 2rem; }
+                            .nav { display: flex; justify-content: space-between; align-items: center; }
+                            .logo { font-size: 1.5rem; margin: 0; }
+                            .menu { display: flex; list-style: none; gap: 2rem; margin: 0; }
+                            .menu a { color: white; text-decoration: none; }
+                            .hero { text-align: center; padding: 4rem 2rem; background: #f5f5f5; }
+                            .hero-title { font-size: 3rem; margin-bottom: 1rem; }
+                            .hero-subtitle { font-size: 1.25rem; color: #666; margin-bottom: 2rem; }
+                            .cta-button { background: #e74c3c; color: white; border: none; padding: 1rem 2rem; font-size: 1.1rem; border-radius: 4px; cursor: pointer; }
+                        `
+                    },
+                    {
+                        id: 'portfolio-creatif',
+                        name: 'Portfolio Créatif',
+                        category: 'Portfolio',
+                        description: 'Portfolio moderne pour créatifs et designers',
+                        preview: 'portfolio.jpg',
+                        html: `
+                            <header class="portfolio-header">
+                                <h1 class="name editable" contenteditable="false">John Doe</h1>
+                                <p class="title editable" contenteditable="false">Designer Créatif</p>
+                            </header>
+                            <section class="works">
+                                <h2 class="section-title editable" contenteditable="false">Mes Travaux</h2>
+                                <div class="works-grid">
+                                    <div class="work-item">
+                                        <div class="work-placeholder"></div>
+                                        <h3 class="editable" contenteditable="false">Projet 1</h3>
+                                    </div>
+                                    <div class="work-item">
+                                        <div class="work-placeholder"></div>
+                                        <h3 class="editable" contenteditable="false">Projet 2</h3>
+                                    </div>
+                                </div>
+                            </section>
+                        `,
+                        css: `
+                            .portfolio-header { text-align: center; padding: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+                            .name { font-size: 2.5rem; margin-bottom: 0.5rem; }
+                            .title { font-size: 1.2rem; opacity: 0.9; }
+                            .works { padding: 3rem 2rem; }
+                            .section-title { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+                            .works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+                            .work-item { text-align: center; }
+                            .work-placeholder { height: 200px; background: #e0e0e0; border-radius: 8px; margin-bottom: 1rem; }
+                        `
+                    }
+                ];
+                
+                this.sections = [
+                    {
+                        id: 'hero-video',
+                        name: 'Hero avec Vidéo',
+                        category: 'Heroes',
+                        html: `
+                            <section class="hero-video">
+                                <div class="video-bg">
+                                    <div class="video-overlay"></div>
+                                </div>
+                                <div class="hero-content">
+                                    <h1 class="editable" contenteditable="false">Titre Principal</h1>
+                                    <p class="editable" contenteditable="false">Sous-titre accrocheur</p>
+                                    <button class="editable" contenteditable="false">Call to Action</button>
+                                </div>
+                            </section>
+                        `,
+                        css: `
+                            .hero-video { position: relative; height: 100vh; overflow: hidden; }
+                            .video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; }
+                            .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+                            .hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; text-align: center; }
+                            .hero-content h1 { font-size: 4rem; margin-bottom: 1rem; }
+                            .hero-content p { font-size: 1.5rem; margin-bottom: 2rem; }
+                            .hero-content button { background: #fff; color: #333; border: none; padding: 1rem 2rem; font-size: 1.1rem; border-radius: 4px; cursor: pointer; }
+                        `
+                    },
+                    {
+                        id: 'features-grid',
+                        name: 'Grille de Features',
+                        category: 'Features',
+                        html: `
+                            <section class="features-section">
+                                <h2 class="section-title editable" contenteditable="false">Nos Services</h2>
+                                <div class="features-grid">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">⚡</div>
+                                        <h3 class="editable" contenteditable="false">Rapide</h3>
+                                        <p class="editable" contenteditable="false">Performance optimale garantie</p>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">🎨</div>
+                                        <h3 class="editable" contenteditable="false">Design</h3>
+                                        <p class="editable" contenteditable="false">Interface moderne et élégante</p>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">📱</div>
+                                        <h3 class="editable" contenteditable="false">Responsive</h3>
+                                        <p class="editable" contenteditable="false">Adapté à tous les écrans</p>
+                                    </div>
+                                </div>
+                            </section>
+                        `,
+                        css: `
+                            .features-section { padding: 4rem 2rem; background: #f8f9fa; }
+                            .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; }
+                            .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+                            .feature-card { text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                            .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+                            .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+                            .feature-card p { color: #666; }
+                        `
+                    }
+                ];
+                
+                this.colorPalettes = {
+                    sobres: [
+                        { name: "Élégance Noir", primary: "#000000", secondary: "#333333", accent: "#666666", bg: "#FFFFFF" },
+                        { name: "Minimal Gris", primary: "#2c3e50", secondary: "#7f8c8d", accent: "#bdc3c7", bg: "#ecf0f1" },
+                        { name: "Pro Bleu", primary: "#0D47A1", secondary: "#1976D2", accent: "#42A5F5", bg: "#FAFAFA" }
+                    ],
+                    vives: [
+                        { name: "Tropical", primary: "#FF6B6B", secondary: "#4ECDC4", accent: "#FFE66D", bg: "#F7FFF7" },
+                        { name: "Sunset", primary: "#FF4757", secondary: "#FF6348", accent: "#FFA502", bg: "#FFF5F5" },
+                        { name: "Ocean", primary: "#00B8D4", secondary: "#00ACC1", accent: "#0097A7", bg: "#E0F7FA" }
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                // Initialiser l'application
+                this.loadTemplates();
+                this.setupEventListeners();
+                this.createNewProject();
+                
+                // Afficher un message de bienvenue
+                this.showToast('Bienvenue dans ComfyCMS! 🚀', 'success');
+            }
+            
+            setupEventListeners() {
+                // Écouter les clics sur les éléments éditables
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('editable')) {
+                        this.selectElement(e.target);
+                    }
+                });
+                
+                // Écouter les changements de contenu
+                document.addEventListener('input', (e) => {
+                    if (e.target.classList.contains('editable')) {
+                        this.saveHistory();
+                    }
+                });
+                
+                // Raccourcis clavier
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        switch(e.key) {
+                            case 'z':
+                                e.preventDefault();
+                                this.undo();
+                                break;
+                            case 'y':
+                                e.preventDefault();
+                                this.redo();
+                                break;
+                            case 's':
+                                e.preventDefault();
+                                this.saveProject();
+                                break;
+                        }
+                    }
+                });
+            }
+            
+            // Gestion des templates
+            loadTemplates() {
+                const content = `
+                    <div class="templates-grid">
+                        ${this.templates.map(template => `
+                            <div class="template-card" onclick="comfyCMS.selectTemplate('${template.id}')">
+                                <div class="template-preview">
+                                    <div class="template-badge">${template.category}</div>
+                                </div>
+                                <div class="template-info">
+                                    <h3 class="template-name">${template.name}</h3>
+                                    <p class="template-description">${template.description}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('sidebar-content').innerHTML = content;
+            }
+            
+            selectTemplate(templateId) {
+                const template = this.templates.find(t => t.id === templateId);
+                if (!template) return;
+                
+                this.currentTemplate = template;
+                
+                // Appliquer le template
+                const previewContent = document.getElementById('preview-content');
+                previewContent.innerHTML = template.html;
+                
+                // Appliquer les styles
+                const styleTag = document.getElementById('template-styles') || document.createElement('style');
+                styleTag.id = 'template-styles';
+                styleTag.textContent = template.css;
+                document.head.appendChild(styleTag);
+                
+                // Rendre les éléments éditables
+                this.makeElementsEditable();
+                
+                this.showToast(`Template "${template.name}" appliqué!`, 'success');
+                this.saveHistory();
+            }
+            
+            // Gestion des sections
+            loadSections() {
+                const content = `
+                    <div class="sections-grid">
+                        ${this.sections.map(section => `
+                            <div class="section-card" onclick="comfyCMS.addSection('${section.id}')">
+                                <div class="section-preview"></div>
+                                <div class="section-info">
+                                    <h4 class="section-name">${section.name}</h4>
+                                    <p class="section-category">${section.category}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('sidebar-content').innerHTML = content;
+            }
+            
+            addSection(sectionId) {
+                const section = this.sections.find(s => s.id === sectionId);
+                if (!section) return;
+                
+                const previewContent = document.getElementById('preview-content');
+                
+                // Créer un conteneur pour la nouvelle section
+                const sectionDiv = document.createElement('div');
+                sectionDiv.innerHTML = section.html;
+                
+                // Ajouter la section au contenu
+                previewContent.appendChild(sectionDiv.firstElementChild);
+                
+                // Ajouter les styles
+                const currentStyles = document.getElementById('template-styles');
+                if (currentStyles) {
+                    currentStyles.textContent += '\n' + section.css;
+                }
+                
+                // Rendre les nouveaux éléments éditables
+                this.makeElementsEditable();
+                
+                this.showToast(`Section "${section.name}" ajoutée!`, 'success');
+                this.saveHistory();
+            }
+            
+            // Édition des éléments
+            makeElementsEditable() {
+                const editables = document.querySelectorAll('.editable');
+                editables.forEach(el => {
+                    el.contentEditable = 'false';
+                    el.addEventListener('dblclick', () => {
+                        this.enableEditing(el);
+                    });
+                });
+            }
+            
+            selectElement(element) {
+                // Désélectionner l'élément précédent
+                if (this.selectedElement) {
+                    this.selectedElement.classList.remove('editing');
+                }
+                
+                // Sélectionner le nouvel élément
+                this.selectedElement = element;
+                element.classList.add('editing');
+                
+                // Afficher les propriétés
+                this.showProperties(element);
+                
+                // Positionner la toolbar flottante
+                this.positionFloatingToolbar(element);
+            }
+            
+            enableEditing(element) {
+                element.contentEditable = 'true';
+                element.focus();
+                
+                // Sélectionner tout le texte
+                const range = document.createRange();
+                range.selectNodeContents(element);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                // Désactiver l'édition au blur
+                element.addEventListener('blur', () => {
+                    element.contentEditable = 'false';
+                }, { once: true });
+            }
+            
+            showProperties(element) {
+                const styles = window.getComputedStyle(element);
+                
+                const content = `
+                    <div class="properties-section">
+                        <h3>Texte</h3>
+                        <div class="property-group">
+                            <label class="property-label">Police</label>
+                            <select class="property-input" onchange="comfyCMS.updateStyle('fontFamily', this.value)">
+                                <option value="Arial">Arial</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Helvetica">Helvetica</option>
+                            </select>
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Taille</label>
+                            <input type="number" class="property-input" value="${parseInt(styles.fontSize)}" 
+                                   onchange="comfyCMS.updateStyle('fontSize', this.value + 'px')">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Couleur</label>
+                            <div class="color-picker-wrapper">
+                                <input type="text" class="color-input" id="text-color" value="${this.rgbToHex(styles.color)}"
+                                       onchange="comfyCMS.updateStyle('color', this.value)">
+                                <div class="color-preview" style="background: ${styles.color}"
+                                     onclick="document.getElementById('color-picker-input').click()"></div>
+                                <input type="color" id="color-picker-input" style="display: none"
+                                       onchange="comfyCMS.updateColorInput(this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="properties-section">
+                        <h3>Espacement</h3>
+                        <div class="property-group">
+                            <label class="property-label">Marge (px)</label>
+                            <input type="number" class="property-input" placeholder="Toutes"
+                                   onchange="comfyCMS.updateStyle('margin', this.value + 'px')">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">Padding (px)</label>
+                            <input type="number" class="property-input" placeholder="Toutes"
+                                   onchange="comfyCMS.updateStyle('padding', this.value + 'px')">
+                        </div>
+                    </div>
+                    
+                    <div class="properties-section">
+                        <h3>Palettes de couleurs</h3>
+                        <div class="property-group">
+                            <label class="property-label">Sobres</label>
+                            ${this.colorPalettes.sobres.map(palette => `
+                                <div style="display: flex; gap: 8px; margin: 8px 0; cursor: pointer"
+                                     onclick="comfyCMS.applyColorPalette('${palette.name}')">
+                                    <div style="width: 30px; height: 30px; background: ${palette.primary}; border-radius: 4px"></div>
+                                    <div style="width: 30px; height: 30px; background: ${palette.secondary}; border-radius: 4px"></div>
+                                    <div style="width: 30px; height: 30px; background: ${palette.accent}; border-radius: 4px"></div>
+                                    <span style="margin-left: 8px; line-height: 30px">${palette.name}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('properties-content').innerHTML = content;
+            }
+            
+            positionFloatingToolbar(element) {
+                const toolbar = document.getElementById('floating-toolbar');
+                const rect = element.getBoundingClientRect();
+                
+                toolbar.style.top = (rect.top - 40) + 'px';
+                toolbar.style.left = rect.left + 'px';
+                toolbar.classList.add('active');
+                
+                // Cacher la toolbar quand on clique ailleurs
+                setTimeout(() => {
+                    document.addEventListener('click', (e) => {
+                        if (!toolbar.contains(e.target) && !element.contains(e.target)) {
+                            toolbar.classList.remove('active');
+                        }
+                    }, { once: true });
+                }, 0);
+            }
+            
+            // Commandes d'édition
+            textCommand(command) {
+                document.execCommand(command, false, null);
+                this.saveHistory();
+            }
+            
+            insertLink() {
+                const url = prompt('Entrez l\'URL:');
+                if (url) {
+                    document.execCommand('createLink', false, url);
+                    this.saveHistory();
+                }
+            }
+            
+            changeColor() {
+                const color = prompt('Entrez la couleur (hex):');
+                if (color) {
+                    document.execCommand('foreColor', false, color);
+                    this.saveHistory();
+                }
+            }
+            
+            updateStyle(property, value) {
+                if (this.selectedElement) {
+                    this.selectedElement.style[property] = value;
+                    this.saveHistory();
+                }
+            }
+            
+            updateColorInput(color) {
+                document.getElementById('text-color').value = color;
+                this.updateStyle('color', color);
+            }
+            
+            applyColorPalette(paletteName) {
+                const palette = [...this.colorPalettes.sobres, ...this.colorPalettes.vives]
+                    .find(p => p.name === paletteName);
+                
+                if (!palette) return;
+                
+                // Appliquer les couleurs aux éléments principaux
+                const root = document.documentElement;
+                root.style.setProperty('--primary-color', palette.primary);
+                root.style.setProperty('--secondary-color', palette.secondary);
+                root.style.setProperty('--accent-color', palette.accent);
+                root.style.setProperty('--bg-color', palette.bg);
+                
+                // Appliquer aux éléments du template
+                const header = document.querySelector('.header, .portfolio-header');
+                if (header) header.style.background = palette.primary;
+                
+                const buttons = document.querySelectorAll('button, .cta-button');
+                buttons.forEach(btn => btn.style.background = palette.accent);
+                
+                this.showToast(`Palette "${paletteName}" appliquée!`, 'success');
+                this.saveHistory();
+            }
+            
+            // Gestion des onglets
+            switchTab(tab) {
+                // Mettre à jour les onglets actifs
+                document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Charger le contenu approprié
+                switch(tab) {
+                    case 'templates':
+                        this.loadTemplates();
+                        break;
+                    case 'sections':
+                        this.loadSections();
+                        break;
+                    case 'pages':
+                        this.loadPages();
+                        break;
+                    case 'assets':
+                        this.loadAssets();
+                        break;
+                }
+            }
+            
+            loadPages() {
+                const content = `
+                    <div style="padding: 20px">
+                        <h3 style="margin-bottom: 16px">Pages du site</h3>
+                        <div style="background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px; margin-bottom: 8px; cursor: pointer">
+                            <strong>Accueil</strong>
+                            <p style="color: var(--gray-600); font-size: 14px; margin-top: 4px">Page principale</p>
+                        </div>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 16px">
+                            + Ajouter une page
+                        </button>
+                    </div>
+                `;
+                document.getElementById('sidebar-content').innerHTML = content;
+            }
+            
+            loadAssets() {
+                const content = `
+                    <div style="padding: 20px">
+                        <h3 style="margin-bottom: 16px">Médias</h3>
+                        <div style="border: 2px dashed var(--gray-300); border-radius: 8px; padding: 40px; text-align: center; cursor: pointer"
+                             onclick="document.getElementById('file-upload').click()">
+                            <p style="color: var(--gray-600)">Glissez vos images ici ou cliquez pour uploader</p>
+                        </div>
+                        <input type="file" id="file-upload" style="display: none" accept="image/*" multiple>
+                    </div>
+                `;
+                document.getElementById('sidebar-content').innerHTML = content;
+            }
+            
+            // Gestion des appareils
+            setDevice(device) {
+                this.currentDevice = device;
+                
+                // Mettre à jour les boutons
+                document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Mettre à jour la frame de preview
+                const frame = document.getElementById('preview-frame');
+                frame.className = 'preview-frame ' + device;
+            }
+            
+            // Gestion des projets
+            newProject() {
+                if (confirm('Créer un nouveau projet? Les modifications non sauvegardées seront perdues.')) {
+                    this.createNewProject();
+                }
+            }
+            
+            createNewProject() {
+                this.currentProject = {
+                    id: this.generateId(),
+                    name: 'Nouveau Projet',
+                    created: Date.now(),
+                    modified: Date.now(),
+                    template: null,
+                    content: '',
+                    styles: '',
+                    settings: {}
+                };
+                
+                // Réinitialiser l'interface
+                document.getElementById('preview-content').innerHTML = `
+                    <div style="text-align: center; padding: 4rem">
+                        <h2 style="color: var(--gray-600); margin-bottom: 1rem">Choisissez un template pour commencer</h2>
+                        <p style="color: var(--gray-500)">Sélectionnez un template dans la barre latérale</p>
+                    </div>
+                `;
+                
+                this.loadTemplates();
+            }
+            
+            openProject() {
+                this.showModal('Ouvrir un projet', `
+                    <p>Cette fonctionnalité sera disponible prochainement.</p>
+                    <p>Vous pourrez ouvrir des projets sauvegardés localement.</p>
+                `);
+            }
+            
+            saveProject() {
+                if (!this.currentProject) return;
+                
+                // Sauvegarder le contenu actuel
+                this.currentProject.content = document.getElementById('preview-content').innerHTML;
+                this.currentProject.styles = document.getElementById('template-styles')?.textContent || '';
+                this.currentProject.modified = Date.now();
+                
+                // Simuler la sauvegarde
+                this.showToast('Projet sauvegardé!', 'success');
+                
+                // Dans une vraie app, on utiliserait IndexedDB ou l'API File System
+                localStorage.setItem('comfycms_project_' + this.currentProject.id, JSON.stringify(this.currentProject));
+            }
+            
+            // Export
+            exportProject() {
+                if (!this.currentTemplate) {
+                    this.showToast('Veuillez d\'abord sélectionner un template', 'error');
+                    return;
+                }
+                
+                this.showModal('Exporter le projet', `
+                    <div style="margin-bottom: 20px">
+                        <h4>Format d'export:</h4>
+                        <div style="margin: 16px 0">
+                            <label style="display: block; margin-bottom: 8px">
+                                <input type="radio" name="export-format" value="html" checked> HTML Statique
+                            </label>
+                            <label style="display: block; margin-bottom: 8px">
+                                <input type="radio" name="export-format" value="wordpress"> WordPress
+                            </label>
+                            <label style="display: block; margin-bottom: 8px">
+                                <input type="radio" name="export-format" value="zip"> ZIP Complet
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Options:</h4>
+                        <label style="display: block; margin-bottom: 8px">
+                            <input type="checkbox" checked> Optimiser les images
+                        </label>
+                        <label style="display: block; margin-bottom: 8px">
+                            <input type="checkbox" checked> Minifier le code
+                        </label>
+                    </div>
+                `, () => {
+                    this.performExport();
+                });
+            }
+            
+            performExport() {
+                // Récupérer le contenu
+                const content = document.getElementById('preview-content').innerHTML;
+                const styles = document.getElementById('template-styles')?.textContent || '';
+                
+                // Créer le HTML complet
+                const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${this.currentProject.name}</title>
+    <style>
+        ${styles}
+    </style>
+</head>
+<body>
+    ${content}
+</body>
+</html>`;
+                
+                // Télécharger le fichier
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'index.html';
+                a.click();
+                
+                this.showToast('Export réussi!', 'success');
+                this.closeModal();
+            }
+            
+            // Preview
+            preview() {
+                const content = document.getElementById('preview-content').innerHTML;
+                const styles = document.getElementById('template-styles')?.textContent || '';
+                
+                const previewWindow = window.open('', '_blank');
+                previewWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Preview - ${this.currentProject.name}</title>
+                        <style>${styles}</style>
+                    </head>
+                    <body>${content}</body>
+                    </html>
+                `);
+            }
+            
+            // Histoire (Undo/Redo)
+            saveHistory() {
+                const state = {
+                    content: document.getElementById('preview-content').innerHTML,
+                    styles: document.getElementById('template-styles')?.textContent || ''
+                };
+                
+                // Supprimer les états futurs si on est au milieu de l'historique
+                this.history = this.history.slice(0, this.historyIndex + 1);
+                
+                // Ajouter le nouvel état
+                this.history.push(state);
+                this.historyIndex++;
+                
+                // Limiter l'historique à 50 états
+                if (this.history.length > 50) {
+                    this.history.shift();
+                    this.historyIndex--;
+                }
+            }
+            
+            undo() {
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.restoreState(this.history[this.historyIndex]);
+                    this.showToast('Annulé', 'info');
+                }
+            }
+            
+            redo() {
+                if (this.historyIndex < this.history.length - 1) {
+                    this.historyIndex++;
+                    this.restoreState(this.history[this.historyIndex]);
+                    this.showToast('Refait', 'info');
+                }
+            }
+            
+            restoreState(state) {
+                document.getElementById('preview-content').innerHTML = state.content;
+                
+                const styleTag = document.getElementById('template-styles');
+                if (styleTag) {
+                    styleTag.textContent = state.styles;
+                }
+                
+                this.makeElementsEditable();
+            }
+            
+            // UI Helpers
+            showModal(title, content, onConfirm) {
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-body').innerHTML = content;
+                
+                const confirmBtn = document.getElementById('modal-confirm');
+                confirmBtn.onclick = onConfirm || (() => this.closeModal());
+                
+                document.getElementById('modal-backdrop').classList.add('active');
+            }
+            
+            closeModal() {
+                document.getElementById('modal-backdrop').classList.remove('active');
+            }
+            
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="toast-icon">
+                        ${type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'}
+                    </div>
+                    <div>${message}</div>
+                `;
+                
+                document.getElementById('toast-container').appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            
+            // Utilitaires
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+            
+            rgbToHex(rgb) {
+                const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                if (!match) return rgb;
+                
+                const hex = (x) => ("0" + parseInt(x).toString(16)).slice(-2);
+                return "#" + hex(match[1]) + hex(match[2]) + hex(match[3]);
+            }
+        }
+        
+        // Initialiser l'application
+        const comfyCMS = new ComfyCMS();
+    </script>
+</body>
+</html>

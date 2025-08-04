@@ -1,0 +1,291 @@
+
+{
+    "id": "hero-video-fullscreen",
+    "name": "Hero Vidéo Plein Écran",
+    "type": "hero",
+    "category": "heroes",
+    "version": "1.0.0",
+    "description": "Section hero avec vidéo en arrière-plan, overlay et contenu centré",
+    "preview": "preview.jpg",
+    "tags": ["video", "fullscreen", "hero", "modern", "immersive"],
+    "settings": {
+      "video": {
+        "label": "Vidéo",
+        "type": "object",
+        "properties": {
+          "source": {
+            "label": "Source",
+            "type": "select",
+            "options": ["file", "youtube", "vimeo"],
+            "default": "file"
+          },
+          "url": {
+            "label": "URL de la vidéo",
+            "type": "string",
+            "placeholder": "https://...",
+            "required": true
+          },
+          "poster": {
+            "label": "Image de prévisualisation",
+            "type": "image",
+            "help": "Affichée pendant le chargement de la vidéo"
+          },
+          "autoplay": {
+            "label": "Lecture automatique",
+            "type": "boolean",
+            "default": true
+          },
+          "muted": {
+            "label": "Muet",
+            "type": "boolean",
+            "default": true,
+            "help": "Requis pour l'autoplay sur la plupart des navigateurs"
+          },
+          "loop": {
+            "label": "Boucle",
+            "type": "boolean",
+            "default": true
+          },
+          "controls": {
+            "label": "Afficher les contrôles",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "overlay": {
+        "label": "Overlay",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "label": "Activer l'overlay",
+            "type": "boolean",
+            "default": true
+          },
+          "type": {
+            "label": "Type d'overlay",
+            "type": "select",
+            "options": ["solid", "gradient"],
+            "default": "solid",
+            "showIf": "overlay.enabled"
+          },
+          "color": {
+            "label": "Couleur",
+            "type": "color",
+            "default": "rgba(0, 0, 0, 0.5)",
+            "showIf": "overlay.enabled && overlay.type === 'solid'"
+          },
+          "gradient": {
+            "label": "Dégradé",
+            "type": "gradient",
+            "default": "linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%)",
+            "showIf": "overlay.enabled && overlay.type === 'gradient'"
+          }
+        }
+      },
+      "content": {
+        "label": "Contenu",
+        "type": "object",
+        "properties": {
+          "title": {
+            "label": "Titre principal",
+            "type": "string",
+            "default": "Bienvenue",
+            "editable": true
+          },
+          "subtitle": {
+            "label": "Sous-titre",
+            "type": "string",
+            "default": "Découvrez notre univers",
+            "editable": true
+          },
+          "description": {
+            "label": "Description",
+            "type": "text",
+            "default": "",
+            "editable": true,
+            "optional": true
+          },
+          "alignment": {
+            "label": "Alignement",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+          },
+          "verticalPosition": {
+            "label": "Position verticale",
+            "type": "select",
+            "options": ["top", "center", "bottom"],
+            "default": "center"
+          }
+        }
+      },
+      "buttons": {
+        "label": "Boutons",
+        "type": "array",
+        "maxItems": 2,
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "label": "Texte",
+              "type": "string",
+              "default": "En savoir plus",
+              "editable": true
+            },
+            "link": {
+              "label": "Lien",
+              "type": "string",
+              "default": "#",
+              "editable": true
+            },
+            "style": {
+              "label": "Style",
+              "type": "select",
+              "options": ["primary", "secondary", "outline", "ghost"],
+              "default": "primary"
+            },
+            "icon": {
+              "label": "Icône",
+              "type": "icon",
+              "optional": true
+            },
+            "target": {
+              "label": "Cible",
+              "type": "select",
+              "options": ["_self", "_blank"],
+              "default": "_self"
+            }
+          }
+        }
+      },
+      "animation": {
+        "label": "Animation",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "label": "Activer les animations",
+            "type": "boolean",
+            "default": true
+          },
+          "type": {
+            "label": "Type d'animation",
+            "type": "select",
+            "options": ["fade", "slide-up", "slide-down", "zoom", "rotate"],
+            "default": "fade",
+            "showIf": "animation.enabled"
+          },
+          "duration": {
+            "label": "Durée (ms)",
+            "type": "number",
+            "default": 1000,
+            "min": 100,
+            "max": 3000,
+            "step": 100,
+            "showIf": "animation.enabled"
+          },
+          "delay": {
+            "label": "Délai (ms)",
+            "type": "number",
+            "default": 0,
+            "min": 0,
+            "max": 2000,
+            "step": 100,
+            "showIf": "animation.enabled"
+          },
+          "easing": {
+            "label": "Easing",
+            "type": "select",
+            "options": ["ease", "ease-in", "ease-out", "ease-in-out", "linear"],
+            "default": "ease-out",
+            "showIf": "animation.enabled"
+          }
+        }
+      },
+      "height": {
+        "label": "Hauteur",
+        "type": "object",
+        "properties": {
+          "desktop": {
+            "label": "Desktop",
+            "type": "select",
+            "options": ["100vh", "90vh", "80vh", "70vh", "600px", "500px"],
+            "default": "100vh"
+          },
+          "tablet": {
+            "label": "Tablette",
+            "type": "select",
+            "options": ["100vh", "80vh", "70vh", "60vh", "500px", "400px"],
+            "default": "80vh"
+          },
+          "mobile": {
+            "label": "Mobile",
+            "type": "select",
+            "options": ["100vh", "80vh", "70vh", "60vh", "400px", "350px"],
+            "default": "70vh"
+          }
+        }
+      },
+      "scrollIndicator": {
+        "label": "Indicateur de scroll",
+        "type": "object",
+        "properties": {
+          "show": {
+            "label": "Afficher",
+            "type": "boolean",
+            "default": true
+          },
+          "type": {
+            "label": "Type",
+            "type": "select",
+            "options": ["arrow", "mouse", "text"],
+            "default": "arrow",
+            "showIf": "scrollIndicator.show"
+          },
+          "animation": {
+            "label": "Animation",
+            "type": "select",
+            "options": ["bounce", "fade", "none"],
+            "default": "bounce",
+            "showIf": "scrollIndicator.show"
+          }
+        }
+      }
+    },
+    "variants": [
+      {
+        "id": "default",
+        "name": "Par défaut",
+        "default": true
+      },
+      {
+        "id": "minimal",
+        "name": "Minimal",
+        "settings": {
+          "overlay.enabled": false,
+          "scrollIndicator.show": false,
+          "animation.enabled": false
+        }
+      },
+      {
+        "id": "cinematic",
+        "name": "Cinématique",
+        "settings": {
+          "overlay.type": "gradient",
+          "overlay.gradient": "linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.9) 100%)",
+          "content.verticalPosition": "bottom",
+          "animation.type": "slide-up"
+        }
+      }
+    ],
+    "dependencies": {
+      "css": [],
+      "js": ["video-background.js"],
+      "libraries": []
+    },
+    "compatibility": {
+      "browsers": ["Chrome 60+", "Firefox 55+", "Safari 11+", "Edge 79+"],
+      "devices": ["desktop", "tablet", "mobile"],
+      "features": ["video", "intersection-observer"]
+    }
+  }

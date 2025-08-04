@@ -1,0 +1,255 @@
+
+{
+    "id": "restaurant-moderne",
+    "name": "Restaurant Moderne",
+    "version": "1.0.0",
+    "category": "restaurant",
+    "author": "ComfyCMS",
+    "description": "Template moderne et élégant pour restaurants avec menu interactif et système de réservation",
+    "features": [
+      "responsive",
+      "animations",
+      "seo-ready",
+      "menu-interactif",
+      "reservation"
+    ],
+    "colorSchemes": [
+      "light",
+      "dark"
+    ],
+    "sections": [
+      {
+        "id": "header",
+        "name": "Header Navigation",
+        "type": "header",
+        "required": true,
+        "settings": {
+          "logo": {
+            "type": "text|image",
+            "default": "text"
+          },
+          "menuStyle": {
+            "type": "horizontal|hamburger",
+            "default": "horizontal"
+          },
+          "sticky": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      {
+        "id": "hero",
+        "name": "Hero Principal",
+        "type": "hero",
+        "required": true,
+        "settings": {
+          "background": {
+            "type": "image|video|slideshow",
+            "default": "image"
+          },
+          "overlay": {
+            "type": "boolean",
+            "default": true
+          },
+          "height": {
+            "type": "full|large|medium",
+            "default": "full"
+          }
+        }
+      },
+      {
+        "id": "about",
+        "name": "À Propos",
+        "type": "content",
+        "required": false,
+        "settings": {
+          "layout": {
+            "type": "centered|split|alternate",
+            "default": "split"
+          }
+        }
+      },
+      {
+        "id": "menu",
+        "name": "Menu Restaurant",
+        "type": "menu",
+        "required": true,
+        "settings": {
+          "categories": {
+            "type": "tabs|accordion|grid",
+            "default": "tabs"
+          },
+          "showPrices": {
+            "type": "boolean",
+            "default": true
+          },
+          "showImages": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      {
+        "id": "gallery",
+        "name": "Galerie Photos",
+        "type": "gallery",
+        "required": false,
+        "settings": {
+          "layout": {
+            "type": "grid|masonry|carousel",
+            "default": "grid"
+          },
+          "columns": {
+            "type": "number",
+            "default": 3,
+            "min": 2,
+            "max": 6
+          }
+        }
+      },
+      {
+        "id": "testimonials",
+        "name": "Avis Clients",
+        "type": "testimonials",
+        "required": false,
+        "settings": {
+          "display": {
+            "type": "slider|grid|list",
+            "default": "slider"
+          },
+          "autoplay": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      {
+        "id": "reservation",
+        "name": "Réservation",
+        "type": "booking",
+        "required": true,
+        "settings": {
+          "fields": {
+            "type": "array",
+            "default": ["name", "email", "phone", "date", "time", "guests", "message"]
+          },
+          "confirmation": {
+            "type": "email|sms|both",
+            "default": "email"
+          }
+        }
+      },
+      {
+        "id": "contact",
+        "name": "Contact & Localisation",
+        "type": "contact",
+        "required": true,
+        "settings": {
+          "showMap": {
+            "type": "boolean",
+            "default": true
+          },
+          "mapProvider": {
+            "type": "google|openstreetmap",
+            "default": "google"
+          }
+        }
+      },
+      {
+        "id": "footer",
+        "name": "Footer",
+        "type": "footer",
+        "required": true,
+        "settings": {
+          "columns": {
+            "type": "number",
+            "default": 4,
+            "min": 1,
+            "max": 6
+          },
+          "showSocial": {
+            "type": "boolean",
+            "default": true
+          },
+          "showNewsletter": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    ],
+    "dependencies": {
+      "fonts": [
+        {
+          "family": "Playfair Display",
+          "weights": ["400", "700"],
+          "provider": "google"
+        },
+        {
+          "family": "Open Sans",
+          "weights": ["300", "400", "600"],
+          "provider": "google"
+        }
+      ],
+      "libraries": [
+        {
+          "name": "aos",
+          "version": "2.3.4",
+          "cdn": "https://unpkg.com/aos@2.3.4/dist/aos.js"
+        },
+        {
+          "name": "swiper",
+          "version": "8.4.7",
+          "cdn": "https://unpkg.com/swiper@8/swiper-bundle.min.js"
+        }
+      ],
+      "icons": "fontawesome"
+    },
+    "customProperties": {
+      "--primary-color": "#D4AF37",
+      "--secondary-color": "#1A1A1A",
+      "--accent-color": "#8B0000",
+      "--text-color": "#333333",
+      "--bg-color": "#FFFFFF",
+      "--font-heading": "'Playfair Display', serif",
+      "--font-body": "'Open Sans', sans-serif",
+      "--border-radius": "4px",
+      "--transition": "all 0.3s ease"
+    },
+    "seo": {
+      "defaultTitle": "Restaurant {name} - Cuisine Gastronomique",
+      "defaultDescription": "Découvrez notre cuisine raffinée dans un cadre élégant. Réservez votre table en ligne.",
+      "defaultKeywords": ["restaurant", "gastronomie", "cuisine", "réservation"],
+      "ogImage": "preview.jpg",
+      "structuredData": {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "{name}",
+        "description": "{description}",
+        "url": "{url}",
+        "telephone": "{phone}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "{street}",
+          "addressLocality": "{city}",
+          "postalCode": "{zip}",
+          "addressCountry": "{country}"
+        },
+        "openingHours": "{hours}",
+        "servesCuisine": "{cuisine}"
+      }
+    },
+    "settings": {
+      "performance": {
+        "lazyLoadImages": true,
+        "minifyCode": true,
+        "optimizeImages": true,
+        "criticalCSS": true
+      },
+      "compatibility": {
+        "browsers": ["last 2 versions", "not dead", "> 0.2%"],
+        "polyfills": ["intersection-observer", "smoothscroll"]
+      }
+    }
+  }

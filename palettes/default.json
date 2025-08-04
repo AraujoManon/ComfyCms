@@ -1,0 +1,54 @@
+{
+  "sobres": [
+    {
+      "name": "Élégance Noir",
+      "primary": "#000000",
+      "secondary": "#333333",
+      "accent": "#666666",
+      "background": "#FFFFFF",
+      "text": "#000000"
+    },
+    {
+      "name": "Minimal Gris",
+      "primary": "#2c3e50",
+      "secondary": "#7f8c8d",
+      "accent": "#bdc3c7",
+      "background": "#ecf0f1",
+      "text": "#2c3e50"
+    },
+    {
+      "name": "Pro Bleu",
+      "primary": "#0D47A1",
+      "secondary": "#1976D2",
+      "accent": "#42A5F5",
+      "background": "#FAFAFA",
+      "text": "#212121"
+    }
+  ],
+  "vives": [
+    {
+      "name": "Tropical Paradise",
+      "primary": "#FF6B6B",
+      "secondary": "#4ECDC4",
+      "accent": "#FFE66D",
+      "background": "#F7FFF7",
+      "text": "#2D3436"
+    },
+    {
+      "name": "Sunset Vibes",
+      "primary": "#FF4757",
+      "secondary": "#FF6348",
+      "accent": "#FFA502",
+      "background": "#FFF5F5",
+      "text": "#2C2C2C"
+    },
+    {
+      "name": "Ocean Dream",
+      "primary": "#00B8D4",
+      "secondary": "#00ACC1",
+      "accent": "#0097A7",
+      "background": "#E0F7FA",
+      "text": "#004D40"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "comfycrm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "type": "module",
+  "scripts": {
+    "setup": "node setup.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^7.0.6"
+  },
+  "dependencies": {
+    "@vitejs/plugin-legacy": "^7.1.0",
+    "color": "^5.0.0",
+    "dayjs": "^1.11.13",
+    "dompurify": "^3.2.6",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
+    "marked": "^16.1.2",
+    "prismjs": "^1.30.0",
+    "sortablejs": "^1.15.6",
+    "uuid": "^11.1.0"
+  }
+}
